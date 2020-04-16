@@ -38,17 +38,79 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func convertUnit(_ sender: Any) {
-        if bntConvertLeft.alpha == 1.0 {
-            bntConvertRight.alpha = 1.0
-            bntConvertLeft.alpha = 0.5
-        } else {
-            bntConvertRight.alpha = 0.5
-            bntConvertLeft.alpha = 1.0
+    @IBAction func convertUnit(_ sender: UIButton?) {
+        if let sender = sender {
+            if sender == bntConvertLeft {
+                bntConvertRight.alpha = 0.5
+            } else {
+                bntConvertLeft.alpha = 0.5
+            }
+            sender.alpha = 1.0
+        }
+        whitchUnitConvert()
+        
+        let result = Double(lbResult.text!)!
+        lbResult.text = String(format: "%.2f", result)
+        
+        view.endEditing(true)
+    }
+    
+    func whitchUnitConvert() {
+        switch titleUnit.text {
+        case Units.temperature:
+            calculateTemperature()
+        case Units.weight:
+            calculateWeight()
+        case Units.currency:
+            calculateCurrency()
+        default:
+            calculateDistance()
         }
     }
     
-    func convert()
+    func calculateTemperature() {
+        guard let temperature = Double(tfValue.text!) else {return}
+        if bntConvertRight.alpha == 1.0 {
+            lbResultUnit.text = Units.celsius
+            lbResult.text = String((temperature - 32) / 1.8)
+        } else {
+            lbResultUnit.text = Units.fareinheit
+            lbResult.text = String(temperature * 1.8 + 32)
+        }
+    }
+    
+    func calculateWeight() {
+        guard let weight = Double(tfValue.text!) else {return}
+        if bntConvertRight.alpha == 1.0 {
+            lbResultUnit.text = Units.kilograma
+            lbResult.text = String(weight / 2.20462)
+        } else {
+            lbResultUnit.text = Units.libra
+            lbResult.text = String(weight * 2.20462)
+        }
+    }
+    
+    func calculateCurrency() {
+        guard let currency = Double(tfValue.text!) else {return}
+        if bntConvertRight.alpha == 1.0 {
+            lbResultUnit.text = Units.real
+            lbResult.text = String(currency * 4.8)
+        } else {
+            lbResultUnit.text = Units.dolar
+            lbResult.text = String(currency / 4.8)
+        }
+    }
+    
+    func calculateDistance() {
+        guard let distance = Double(tfValue.text!) else {return}
+        if bntConvertRight.alpha == 1.0 {
+            lbResultUnit.text = Units.meters
+            lbResult.text = String(distance * 1000)
+        } else {
+            lbResultUnit.text = Units.kilometro
+            lbResult.text = String(distance / 1000)
+        }
+    }
     
     private func configScreen(title: String, leftButton: String, rightButton: String, color: UIColor) {
         titleUnit.text = title
@@ -57,6 +119,8 @@ class ViewController: UIViewController {
         viewTop.backgroundColor = color
         lbResultUnit.textColor = color
         lbResult.textColor = color
+        lbResult.text = "0"
+        lbResultUnit.text = ""
     }
     
     private func dismissKeyboard() {
