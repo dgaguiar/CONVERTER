@@ -9,3 +9,5 @@ App develop to convert units.
 Swift 5.0.2
 
 Xcode 11.3.1
+
+> Você pode aprender a desenvolver esta app com o Professor Eric Alves Brito em um curso online na Udemy!
